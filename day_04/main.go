@@ -25,7 +25,7 @@ func (s set) contains(a set) bool {
 	return true
 }
 
-func (s set) intersect(a set) bool {
+func (s set) intersects(a set) bool {
 	for k := range s {
 		if _, ok := a[k]; ok {
 			return true
@@ -64,7 +64,7 @@ func main() {
 		} else if b.contains(a) {
 			matchCounter++
 		}
-		if a.intersect(b) {
+		if a.intersects(b) {
 			overlapCounter++
 		}
 	}

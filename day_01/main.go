@@ -13,14 +13,9 @@ import (
 // and exported a slice of the totals, and then reverse sorted the list to solve
 // part 1 and 2
 
-func elfMapFromFile(name string) (map[int]int, error) {
+func elfMapFromStdIn() (map[int]int, error) {
 	elfMap := make(map[int]int)
-	f, err := os.Open(name)
-	defer f.Close()
-	if err != nil {
-		return elfMap, err
-	}
-	scanner := bufio.NewScanner(f)
+	scanner := bufio.NewScanner(os.Stdin)
 	currentElf := 1
 
 	for scanner.Scan() {
@@ -39,7 +34,7 @@ func elfMapFromFile(name string) (map[int]int, error) {
 }
 
 func main() {
-	elfMap, err := elfMapFromFile("elf_cals.txt")
+	elfMap, err := elfMapFromStdIn()
 	if err != nil {
 		log.Fatalln(err)
 	}

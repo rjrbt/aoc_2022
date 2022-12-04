@@ -47,9 +47,7 @@ func genSet(s string) set {
 }
 
 func main() {
-	f, _ := os.Open("input.txt")
-	defer f.Close()
-	scanner := bufio.NewScanner(f)
+	scanner := bufio.NewScanner(os.Stdin)
 
 	matchCounter := 0
 	overlapCounter := 0

@@ -6,42 +6,18 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	set "github.com/rjrbt/aoc_2022/internal/set"
 )
 
-type set map[int]struct{}
-
-func (s set) add(x int) {
-	s[x] = struct{}{}
-}
-
-// contains compares a set to another set and returns true is a is contained by the set
-// otherwise it returns false
-func (s set) contains(a set) bool {
-	for k := range s {
-		if _, ok := a[k]; !ok {
-			return false
-		}
-	}
-	return true
-}
-
-func (s set) intersects(a set) bool {
-	for k := range s {
-		if _, ok := a[k]; ok {
-			return true
-		}
-	}
-	return false
-}
-
 // genSet takes a number range string such as "22-88" and returns a map of keys from 22 to 88
-func genSet(s string) set {
-	m := make(set)
+func genSet(s string) set.Set[int] {
+	m := make(set.Set[int])
 	r := strings.Split(s, "-")
 	start, _ := strconv.Atoi(r[0])
 	end, _ := strconv.Atoi(r[1])
 	for i := start; i <= end; i++ {
-		m.add(i)
+		m.Add(i)
 	}
 	return m
 }
@@ -57,12 +33,12 @@ func main() {
 		setStrings := strings.Split(newLine, ",")
 		a, b := genSet(setStrings[0]), genSet(setStrings[1])
 
-		if a.contains(b) {
+		if a.Contains(b) {
 			matchCounter++
-		} else if b.contains(a) {
+		} else if b.Contains(a) {
 			matchCounter++
 		}
-		if a.intersects(b) {
+		if a.Intersects(b) {
 			overlapCounter++
 		}
 	}

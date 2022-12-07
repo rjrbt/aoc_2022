@@ -10,6 +10,7 @@ type Hashable interface {
 // Set is a simple key-only map that conforms to the Hashable interface
 type Set[T Hashable] map[T]struct{}
 
+// Add adds an item of type T to the Set[T]
 func (s Set[T]) Add(x T) {
 	s[x] = struct{}{}
 }
@@ -17,12 +18,12 @@ func (s Set[T]) Add(x T) {
 // Has takes a value and returns a boolean based on
 // whether the item is present or not
 func (s Set[T]) Has(x T) bool {
-	if _, ok := s[x]; ok {
-		return true
-	}
-	return false
+	_, ok := s[x]
+	return ok
 }
 
+// Contains takes a set and returns a boolean value if the
+// set is completely contained inside of the compared set.
 func (s Set[T]) Contains(a Set[T]) bool {
 	for k := range s {
 		if _, ok := a[k]; !ok {
@@ -32,6 +33,8 @@ func (s Set[T]) Contains(a Set[T]) bool {
 	return true
 }
 
+// Intersects compares a Set[T] with itself to see if there is any intersection
+// it returns true on any intersection otherwise it returns false
 func (s Set[T]) Intersects(a Set[T]) bool {
 	for k := range s {
 		if _, ok := a[k]; ok {
@@ -53,6 +56,7 @@ func Intersection[T Hashable](a, b Set[T]) Set[T] {
 	return s
 }
 
+// Merge takes two Set[T] and merges them together into a new Set[T]
 func Merge[T Hashable](a, b Set[T]) Set[T] {
 	s := make(Set[T])
 	for k := range a {
@@ -64,6 +68,7 @@ func Merge[T Hashable](a, b Set[T]) Set[T] {
 	return s
 }
 
+// Slice returns a Slice T of Set T
 func (s Set[T]) Slice() []T {
 	var r []T
 	for k := range s {
@@ -72,12 +77,15 @@ func (s Set[T]) Slice() []T {
 	return r
 }
 
+// String returns a string representation of a Set, similar to map[] but
+// without the values
 func (s Set[T]) String() string {
 	var r string
-	r += "Set[ "
+	r += "Set["
 	for k := range s {
 		r += fmt.Sprint(k, " ")
 	}
+	r = r[:len(r)-1]
 	r += "]"
 	return r
 }

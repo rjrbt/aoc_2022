@@ -29,8 +29,8 @@ func main() {
 	overlapCounter := 0
 
 	for scanner.Scan() {
-		newLine := scanner.Text()
-		setStrings := strings.Split(newLine, ",")
+		n := scanner.Text()
+		setStrings := strings.Split(n, ",")
 		a, b := genSet(setStrings[0]), genSet(setStrings[1])
 
 		if a.Contains(b) {

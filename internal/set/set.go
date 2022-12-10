@@ -2,13 +2,8 @@ package set
 
 import "fmt"
 
-// Hashable are the supported types for the set
-type Hashable interface {
-	~int | ~string | ~uint64 | ~byte
-}
-
 // Set is a simple key-only map that conforms to the Hashable interface
-type Set[T Hashable] map[T]struct{}
+type Set[T comparable] map[T]struct{}
 
 // Add adds an item of type T to the Set[T]
 func (s Set[T]) Add(x T) {
@@ -46,7 +41,7 @@ func (s Set[T]) Intersects(a Set[T]) bool {
 
 // Intersection takes two Sets and returns a set of the
 // intersection between the two.
-func Intersection[T Hashable](a, b Set[T]) Set[T] {
+func Intersection[T comparable](a, b Set[T]) Set[T] {
 	s := make(Set[T])
 	for k := range a {
 		if b.Has(k) {
@@ -57,7 +52,7 @@ func Intersection[T Hashable](a, b Set[T]) Set[T] {
 }
 
 // Merge takes two Set[T] and merges them together into a new Set[T]
-func Merge[T Hashable](a, b Set[T]) Set[T] {
+func Merge[T comparable](a, b Set[T]) Set[T] {
 	s := make(Set[T])
 	for k := range a {
 		s.Add(k)

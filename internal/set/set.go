@@ -74,13 +74,9 @@ func (s Set[T]) Slice() []T {
 
 // String returns a string representation of a Set, similar to map[] but
 // without the values
-func (s Set[T]) String() string {
-	var r string
-	r += "Set["
+func (s Set[T]) String() (r string) {
 	for k := range s {
 		r += fmt.Sprint(k, " ")
 	}
-	r = r[:len(r)-1]
-	r += "]"
-	return r
+	return "Set[" + r[:len(r)-1] + "]"
 }

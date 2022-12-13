@@ -80,3 +80,12 @@ func (s Set[T]) String() (r string) {
 	}
 	return "Set[" + r[:len(r)-1] + "]"
 }
+
+// FromSlice makes a Set[T] from []T
+func FromSlice[T comparable](a []T) Set[T] {
+	s := make(Set[T])
+	for _, v := range a {
+		s.Add(v)
+	}
+	return s
+}

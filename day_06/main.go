@@ -17,7 +17,7 @@ func bump(state []byte, b byte) []byte {
 	return state
 }
 
-func makerPosition(l int, b []byte) (r int) {
+func markerPosition(l int, b []byte) (r int) {
 	state := make([]byte, l)
 	copy(state, b[:l])
 
@@ -39,9 +39,9 @@ func main() {
 	b := []byte(s)
 
 	// part 1
-	fmt.Println("packet position: ", makerPosition(4, b))
+	fmt.Println("packet position: ", markerPosition(4, b))
 
 	// part 2
-	fmt.Println("message position:", makerPosition(14, b))
+	fmt.Println("message position:", markerPosition(14, b))
 
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -58,6 +59,13 @@ func (d *dir) recursiveTotal() int {
 	return total
 }
 
+func (d *dir) crawlTotals(c chan int) {
+	for _, v := range d.children {
+		v.crawlTotals(c)
+	}
+	c <- d.recursiveTotal()
+}
+
 func newDir(name string, parent *dir) *dir {
 	return &dir{
 		name:     name,
@@ -97,7 +105,33 @@ func main() {
 		process(scanner.Text(), s)
 	}
 
-	maxDirSize := 100000
-	// TODO: make a channel queue for all dirs
+	c := make(chan int)
 
+	go func() {
+		s.root.crawlTotals(c)
+		close(c)
+	}()
+
+	maxDirSize := 100000
+	sum := 0
+	currentUsedSpace := s.root.recursiveTotal()
+
+	freeUp := 30000000 - (70000000 - currentUsedSpace)
+	dirToFree := 999999999
+
+	for v := range c {
+		// part 1
+		if v <= maxDirSize {
+			sum += v
+		}
+		// part 2
+		if v >= freeUp {
+			if v < dirToFree {
+				dirToFree = v
+			}
+		}
+	}
+
+	fmt.Println("part 1:", sum)
+	fmt.Println("part 2:", dirToFree)
 }

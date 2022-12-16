@@ -51,25 +51,21 @@ func (t tree) viewCount(o ordinal) int {
 	count := 0
 	switch o {
 	case up:
-		if t.up == nil {
-			return count
+		if t.up != nil {
+			return counter(t.up, o, count+1)
 		}
-		return counter(t.up, o, count+1)
 	case down:
-		if t.down == nil {
-			return count
+		if t.down != nil {
+			return counter(t.down, o, count+1)
 		}
-		return counter(t.down, o, count+1)
 	case left:
-		if t.left == nil {
-			return count
+		if t.left != nil {
+			return counter(t.left, o, count+1)
 		}
-		return counter(t.left, o, count+1)
 	case right:
-		if t.right == nil {
-			return count
+		if t.right != nil {
+			return counter(t.right, o, count+1)
 		}
-		return counter(t.right, o, count+1)
 	}
 	return count
 }
@@ -77,31 +73,19 @@ func (t tree) viewCount(o ordinal) int {
 func counter(t *tree, o ordinal, count int) int {
 	switch o {
 	case up:
-		if t.up == nil {
-			return count
-		}
-		if t.up.height >= t.height {
+		if t.up != nil && t.up.height >= t.height {
 			return counter(t.up, o, count+1)
 		}
 	case down:
-		if t.down == nil {
-			return count
-		}
-		if t.down.height >= t.height {
+		if t.down != nil && t.down.height >= t.height {
 			return counter(t.down, o, count+1)
 		}
 	case left:
-		if t.left == nil {
-			return count
-		}
-		if t.left.height >= t.height {
+		if t.left != nil && t.left.height >= t.height {
 			return counter(t.left, o, count+1)
 		}
 	case right:
-		if t.right == nil {
-			return count
-		}
-		if t.right.height >= t.height {
+		if t.right != nil && t.right.height >= t.height {
 			return counter(t.right, o, count+1)
 		}
 	}

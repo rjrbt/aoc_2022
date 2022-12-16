@@ -39,6 +39,75 @@ func (t tree) isVisible() bool {
 	return false
 }
 
+func (t tree) viewScore() int {
+	u := t.viewCount(up)
+	d := t.viewCount(down)
+	l := t.viewCount(left)
+	r := t.viewCount(right)
+	return u * d * l * r
+}
+
+func (t tree) viewCount(o ordinal) int {
+	count := 0
+	switch o {
+	case up:
+		if t.up == nil {
+			return count
+		}
+		return counter(t.up, o, count+1)
+	case down:
+		if t.down == nil {
+			return count
+		}
+		return counter(t.down, o, count+1)
+	case left:
+		if t.left == nil {
+			return count
+		}
+		return counter(t.left, o, count+1)
+	case right:
+		if t.right == nil {
+			return count
+		}
+		return counter(t.right, o, count+1)
+	}
+	return count
+}
+
+func counter(t *tree, o ordinal, count int) int {
+	switch o {
+	case up:
+		if t.up == nil {
+			return count
+		}
+		if t.up.height >= t.height {
+			return counter(t.up, o, count+1)
+		}
+	case down:
+		if t.down == nil {
+			return count
+		}
+		if t.down.height >= t.height {
+			return counter(t.down, o, count+1)
+		}
+	case left:
+		if t.left == nil {
+			return count
+		}
+		if t.left.height >= t.height {
+			return counter(t.left, o, count+1)
+		}
+	case right:
+		if t.right == nil {
+			return count
+		}
+		if t.right.height >= t.height {
+			return counter(t.right, o, count+1)
+		}
+	}
+	return count
+}
+
 func (t tree) max(o ordinal, localMax int) int {
 	switch o {
 	case up:
@@ -71,10 +140,6 @@ func (t tree) max(o ordinal, localMax int) int {
 		}
 	}
 	return localMax
-}
-
-func addForestRow(line string, row int) {
-
 }
 
 type forest struct {
@@ -122,11 +187,20 @@ func main() {
 	}
 
 	visibleCounter := 0
+	topViewScore := 0
 
 	for _, v := range f.trees {
+		// part 1
 		if v.isVisible() {
 			visibleCounter++
 		}
+		// part 2
+		score := v.viewScore()
+		if score > topViewScore {
+			topViewScore = score
+		}
 	}
 	fmt.Println("part 1:", visibleCounter)
+	// note: currently the score is too low, I need to fix some logic
+	fmt.Println("part 2:", topViewScore)
 }
